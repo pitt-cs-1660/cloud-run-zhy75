@@ -6,6 +6,8 @@
  *
  * NOTE: YOU ONLY NEED TO MODIFY THE VOTE FUNCTION AT THE BOTTOM OF THIS FILE.
  */
+import config from './config.js';
+
 firebase.initializeApp(config);
 
 // Watch for state change from sign in
@@ -120,7 +122,24 @@ async function vote(team) {
       /*
        * ++++ YOUR CODE HERE ++++
        */
-      window.alert(`Not implemented yet!`);
+
+      const response = await fetch("/", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        body: new URLSearchParams({ team : team })
+      });
+      console.log(response);
+      if (!response.ok) {
+        console.log(`Error when submitting vote: ${response.statusText}`);
+        window.alert('Something went wrong... Please try again!');
+        return;
+      }
+      const result = await response.json();
+      console.log(`Vote submitted successfully: ${JSON.stringify(result)}`);
+      window.alert(`Vote submitted successfully!`);
 
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
@@ -130,3 +149,5 @@ async function vote(team) {
     window.alert('User not signed in.');
   }
 }
+
+export { vote, toggle };

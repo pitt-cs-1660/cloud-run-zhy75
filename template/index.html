@@ -52,13 +52,26 @@
       {% endfor %}
     </ul>
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      <!-- add Event Listener "click" to the vote -->
-      // document.getElementById("voteTabs").addEventListener("click", function () {
-      //   vote("TABS");
-      // });
-    })
+  <script type="module">
+  import { toggle, vote } from '/static/firebase.js';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Add event listener for the sign-in/sign-out button
+    const signInButton = document.getElementById('signInButton');
+    signInButton.onclick = toggle;
+
+    // Add event listener for the "Vote for TABS" button
+    const voteTabsButton = document.getElementById('voteTabs');
+    voteTabsButton.onclick = function () {
+      vote('TABS');
+    };
+
+    // Add event listener for the "Vote for SPACES" button
+    const voteSpacesButton = document.getElementById('voteSpaces');
+    voteSpacesButton.onclick = function () {
+      vote('SPACES');
+    };
+  });
   </script>
 </body>
 </html>
